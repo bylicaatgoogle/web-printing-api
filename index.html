@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <title>Web Printing API</title>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+  <script class="remove">
+    const respecConfig = {
+      group: "wicg",
+      specStatus: "CG-DRAFT",
+      github: {
+        repoURL: "https://github.com/bylica-at-google/web-printing-api/",
+        branch: "master",
+      },
+      editors: [
+        {
+          name: "Dominik Bylica",
+          email: "bylica@google.com",
+          company: "Google",
+        },
+        {
+          name: "Dominic Farolino",
+          email: "domfarolino@google.com",
+          company: "Google",
+        },
+      ],
+      xref: ["html", "web-platform", "permissions", "permissions-policy", "dom", "webidl", "csp", "trusted-types", "isolated-contexts"],
+      shortName: "web-printing-api",
+      subjectPrefix: "[web-printing-api]",
+    };
+  </script>
+</head>
+
+<body>
+  <section id="abstract">
+    <h2>Abstract</h2>
+    <p>
+      This document defines a new Web Printing API that allows the app
+      developers to build wonderful printer-related features by giving them
+      direct access to <a data-cite="web-printing-api#dfn-printer">printers</a> (in isolated contexts).
+    </p>
+  </section>
+  <section id="sotd">
+    <p>
+      This document is a draft. It is subject to major changes and, while early
+      experimentations are encouraged, it is therefore not intended for implementation.
+    </p>
+  </section>
+  <section class="informative" id="introduction">
+    <h2>
+      Introduction
+    </h2>
+    <p>
+      The Web Printing API brings unprecedented flexibility to implementing
+      printing features on the web… I mean, in the isolated contexts.
+    </p>
+    <p>
+      There is already a window.print() functionality, but that basically opens
+      a print dialog and asks the user to do the rest. The Web Printing API
+      gives app developers access to local
+      <a data-cite="web-printing-api#dfn-printer">printers</a> directly from
+      their web applications (in isolated contexts) and allows them to submit
+      custom <a data-cite="web-printing-api#dfn-print-job">print jobs</a>.
+    </p>
+    <p>
+      Using the Web Printing API you can:
+      <ul>
+        <li>Submit <a data-cite="web-printing-api#dfn-print-job">print jobs</a>
+          straight from the code without any dialogs!</li>
+        <li>Implement your own print dialogs!</li>
+        <li>Print with custom parameters without any user interaction!</li>
+        <li>List <a data-cite="web-printing-api#dfn-printer">printers</a> and
+          fetch their capabilities!</li>
+        <li>When knowing the capabilities, apps can prepare print-ready files
+          with specific paper size, color settings, quality, etc.</li>
+        <li>Automate printing in any way! Build previously repetitive printing
+          workflows!</li>
+        <li>On top of all that, unlike with <code>window.print()</code>, you
+          can observe the status of your
+          <a data-cite="web-printing-api#dfn-print-job">print job</a> - whether
+          it finished, failed, etc.</li>
+      </ul>
+    </p>
+  </section>
+  <section>
+    <h2>
+      Examples
+    </h2>
+
+    <p>Listing <a data-cite="web-printing-api#dfn-printer">Printers</a> & Basic Attributes</p>
+    <pre class="example highlight">
+      try {
+        const printers = await printing.getPrinters();
+        for (const printer of printers) {
+          const attributes = printer.cachedAttributes();
+          console.log(
+            `${attributes.printerName} has the following (basic) attributes: ${attributes}`);
+        }
+      } catch (err) {
+        console.warn("Printing operation failed: " + err);
+      }
+    </pre>
+
+    <p>Listing <a data-cite="web-printing-api#dfn-printer">Printers</a> & Detailed Attributes</p>
+    <pre class="example highlight">
+      try {
+        const printers = await printing.getPrinters();
+        const promises = printers.map(printer => printer.fetchAttributes());
+          Promise.all(promises).then((values) => {
+            for (const attributes of values) {
+              console.log(
+                `${attributes.printerName} has the following (detailed) attributes: ${attributes}`);
+            }
+          });
+      } catch (err) {
+        console.warn("Printing operation failed: " + err);
+      }
+    </pre>
+
+    <p>Querying <a data-cite="web-printing-api#dfn-printer">Printer</a> State</p>
+    <pre class="example highlight">
+      try {
+        const printers = await printing.getPrinters();
+        const printer = printers.find(
+            printer => printer.cachedAttributes().printerName === 'Brother QL-820NWB');
+        const attributes = await printer.fetchAttributes();
+        console.log(
+          `${attributes.printerName}'s new state is ${attributes.printerState}!`);
+      } catch (err) {
+        console.warn("Printing operation failed: " + err);
+      }
+    </pre>
+
+    <p>Submitting a <a data-cite="web-printing-api#dfn-print-job">Print Job</a></p>
+    <pre class="example highlight">
+      try {
+        const printers = await printing.getPrinters();
+        const printer = printers.find(
+          printer => printer.cachedAttributes().printerName === 'Brother QL-820NWB');
+
+        const printJob = await printer.submitPrintJob("Sample Print Job",
+          new Blob(...), {
+            copies: 2,
+            media: 'iso_a4_210x297mm',
+            multipleDocumentHandling: 'separate-documents-collated-copies',
+            printerResolution: {
+              crossFeedDirectionResolution: 300,
+              feedDirectionResolution: 400,
+              units: 'dots-per-inch'
+            },
+            sides: 'one-sided',
+            printQuality: 'high',
+            pageRanges: [{from: 1, to: 5}, {from: 7, to: 10}],
+          });
+
+        const printJobComplete = new Promise((resolve, reject) => {
+          printJob.onjobstatechange = () => {
+            const jobState = printJob.attributes().jobState;
+            if (IsErrorStatus(jobState)) {
+              console.warn(`Job errored: ${jobState}`);
+              reject(/**/);
+              return;
+            }
+            if (jobState === "completed") {
+              console.log("Job complete!");
+              resolve(/**/);
+              return;
+            }
+            console.log(`Job state changed to ${jobState}`);
+          };
+        });
+        await printJobComplete;
+      } catch (err) {
+        console.warn("Printing operation failed: " + err);
+      }
+    </pre>
+
+    <p>Canceling a <a data-cite="web-printing-api#dfn-print-job">Print Job</a></p>
+    <pre class="example highlight">
+      try {
+        const printers = await printing.getPrinters();
+        const printer = printers.find(
+          printer => printer.cachedAttributes().printerName === 'Brother QL-820NWB');
+
+        const printJob = await printer.submitPrintJob(...);
+
+        // This might take no effect if the job has already finished.
+        printJob.cancel();
+
+      } catch (err) {
+        console.warn("Printing operation failed: " + err);
+      }
+    </pre>
+  </section>
+  <section data-dfn-for="Window">
+    <h2>Extensions to the {{Window}} interface</h2>
+    <section>
+      <pre class="idl">
+        [Exposed=Window, SecureContext, IsolatedContext ]
+        partial interface mixin WindowOrWorkerGlobalScope {
+          [SameObject]
+            readonly attribute WebPrintingManager printing;
+        };
+      </pre>
+      <h3>
+        <dfn>printing</dfn> attribute
+      </h3>
+      <p>When getting, the {{Window/printing}} attribute always returns the same
+      instance of the {{WebPrintingManager}} object.</p>
+    </section>
+
+    <section data-dfn-for="printing-interface">
+      <h2><dfn>WebPrintingManager</dfn></h2>
+      <pre class="idl">
+        [Exposed=Window, SecureContext, IsolatedContext]
+        interface WebPrintingManager {
+          [CallWith=ScriptState, RaisesException]
+            Promise&lt;sequence&lt;WebPrinter&gt;&gt; getPrinters();
+        };
+      </pre>
+      <section>
+        <h3><dfn>getPrinters()</dfn> method</h3>
+        The {{WebPrintingManager/getPrinters()}} method steps are:
+        <ol>
+          <li>
+            If [=this=]'s [=relevant global object=]'s [=associated Document=] is
+            not [=allowed to use=] the [=policy-controlled feature=] named
+            "[=policy-controlled feature/web-printing=]", [=exception/throw=] a
+            "{{SecurityError}}" {{DOMException}}.
+          </li>
+          <li>Let |promise:Promise| be [=a new promise=].</li>
+          <li>
+            <p>
+            Query all <a data-cite="web-printing-api#dfn-printer">printers</a>
+            locally available to the operating system.
+            </p>
+          </li>
+          <li>
+            <p>If <a data-cite="web-printing-api#dfn-printer">printers</a> access fails for
+            any reason, <a>reject</a>
+            <var>p</var> with a new {{DOMException}} object.
+            </p>
+          </li>
+          <li>
+            <p>Let <var>web_printers</var> be the
+            list of {{WebPrinter}} objects associated with the fetched
+            <a data-cite="web-printing-api#dfn-printer">printers</a>.</p>
+          </li>
+          <li>
+            <p><a>Resolve</a> <var>p</var> with <var>web_printers</var> and
+            abort these steps.</p>
+          </li>
+          <li>
+            <p>Return <var>p</var>.</p>
+          </li>
+        </ol>
+      </section>
+
+
+  <section>
+    <h1 id="feature-policy-integration">Permissions Policy Integration</h1>
+
+
+    <p>This specification uses a [=policy-controlled feature=] identified by
+    the string "web-printing". Its
+    [=policy-controlled feature/default allowlist=] is <code>"self"</code>.</p>
+
+
+    <div class="note">
+      <p>A [=document=]'s [=Document/permissions policy=] determines whether
+      any content in that document is allowed to use
+      {{printing/getPrinters}}. If disabled in any document, no content
+      in the document will be [=allowed to use=]
+      {{printing/getPrinters}}.
+      </p>
+    </div>
+  </section>
+
+</body>
+
+</html>
