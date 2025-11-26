@@ -64,7 +64,7 @@ Listing Printers & Basic Attributes {#examples-listing-printers-basic}
 ---
 
 <div class="example" id="examples-listing-printers-basic-example">
-  <xmp class="lang-js">
+  <pre highlight=js>
     try {
       const printers = await printing.getPrinters();
       for (const printer of printers) {
@@ -75,14 +75,14 @@ Listing Printers & Basic Attributes {#examples-listing-printers-basic}
     } catch (err) {
       console.warn("Printing operation failed: " + err);
     }
-  </xmp>
+  </pre>
 </div>
 
 Listing Printers & Detailed Attributes {#examples-listing-printers-detailed}
 ---
 
 <div class="example" id="examples-listing-printers-detailed-example">
-  <xmp class="lang-js">
+  <pre highlight=js>
     try {
       const printers = await printing.getPrinters();
       const promises = printers.map(printer => printer.fetchAttributes());
@@ -95,14 +95,14 @@ Listing Printers & Detailed Attributes {#examples-listing-printers-detailed}
     } catch (err) {
       console.warn("Printing operation failed: " + err);
     }
-  </xmp>
+  </pre>
 </div>
 
 Querying Printer State {#examples-querying-printer-state}
 ---
 
 <div class="example" id="examples-querying-printer-state-example">
-  <xmp class="lang-js">
+  <pre highlight=js>
     try {
       const printers = await printing.getPrinters();
       const printer = printers.find(
@@ -113,14 +113,14 @@ Querying Printer State {#examples-querying-printer-state}
     } catch (err) {
       console.warn("Printing operation failed: " + err);
     }
-  </xmp>
+  </pre>
 </div>
 
 Submitting a Print Job {#examples-submitting-print-job}
 ---
 
 <div class="example" id="examples-submitting-print-job-example">
-  <xmp class="lang-js">
+  <pre highlight=js>
     try {
       const printers = await printing.getPrinters();
       const printer = printers.find(
@@ -161,14 +161,14 @@ Submitting a Print Job {#examples-submitting-print-job}
     } catch (err) {
       console.warn("Printing operation failed: " + err);
     }
-  </xmp>
+  </pre>
 </div>
 
 Canceling a Print Job {#examples-canceling-print-job}
 ---
 
 <div class="example" id="examples-cancelling-print-job-example">
-  <xmp class="lang-js">
+  <pre highlight=js>
     try {
       const printers = await printing.getPrinters();
       const printer = printers.find(
@@ -182,7 +182,7 @@ Canceling a Print Job {#examples-canceling-print-job}
     } catch (err) {
       console.warn("Printing operation failed: " + err);
     }
-  </xmp>
+  </pre>
 </div>
 
 
