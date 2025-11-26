@@ -21,7 +21,7 @@ features in [=isolated contexts=] (the API is not available on the open web).
 Existing alternative {#intro-alternative}
 ---
 
-There is a `window.print()` functionality that exists already, but it basically
+There is a <code>window.[=Window/print()=]</code> functionality that exists already, but it basically
 opens a print dialog and asks the user to do the rest. The Web Printing API
 gives app developers access to printers locally available to
 the operating system directly from the web applications in [=isolated contexts=],
@@ -41,8 +41,8 @@ Using the Web Printing API you can:
     files with specific print attributes.
   - Automate printing in any way! Build previously repetitive printing
     workflows!
-  - On top of all that, unlike with `window.print()`, you can observe
-    the job state of your print jobs - whether they finished,
+  - On top of all that, unlike with <code>window.[=Window/print()=]</code>,
+    you can observe the job state of your print jobs - whether they finished,
     failed, etc.
 
 <div class="note">
