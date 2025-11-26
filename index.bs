@@ -196,9 +196,6 @@ Extensions to the {{Window}} interface {#window-interface}
   };
 </xmp>
 
-{{printing}} attribute {#window-interface-printing-attribute}
----
-
 When getting, the {{printing}} attribute always returns the same instance of
 the {{WebPrintingManager}} object.
 
@@ -215,9 +212,6 @@ the {{WebPrintingManager}} object.
 
 Methods on this interface complete asynchronously, queuing work on the
 <dfn>web printing task source</dfn>.
-
-{{getPrinters()}} method {#get-printers-method}
----
 
 <div algorithm=get-printers>
   The {{getPrinters()}} method steps are:
@@ -252,24 +246,16 @@ Methods on this interface complete asynchronously, queuing work on the
   };
 </xmp>
 
-Attributes internal slot {#webprinter-attributes-internal-slot}
----
-
-Attributes is an instance of {{WebPrinterAttributes}} storing the
+Attributes internal slot is an instance of {{WebPrinterAttributes}} storing the
 printer capabilities throughout the lifetime of the {{WebPrinter}} object.
+
+{{cachedAttributes()}} method returns the current value stored in the attributes internal slot.
 
 <div class="note">
   The freshly created {{WebPrinter}} object will only store the printer name
   and the printer id in the attributes internal slot. For detailed attributes,
   {{fetchAttributes()}} needs to be used.
 </div>
-
-{{cachedAttributes()}} method {#webprinter-cached-attributes-method}
----
-Returns the current value stored in the attributes internal slot.
-
-{{fetchAttributes()}} method {#webprinter-fetch-attributes-method}
----
 
 <div algorithm=fetch-attributes>
   The {{fetchAttributes()}} method steps are:
@@ -283,9 +269,6 @@ Returns the current value stored in the attributes internal slot.
       1. [=Resolve=] |promise| with |new_web_printer_attributes|.
   1. Return |promise|.
 </div>
-
-{{submitPrintJob()}} method {#webprinter-submit-print-job-method}
----
 
 <div algorithm=submit-print-job>
   The {{submitPrintJob()}} method steps are:
@@ -318,16 +301,10 @@ Returns the current value stored in the attributes internal slot.
   };
 </xmp>
 
-{{attributes()}} method {#web-print-job-attributes}
----
+{{attributes()}} method returns an instances of {{WebPrintJobAttributes}}
+which shows the state the print job is in (e.g. how many pages completed).
 
-Returns an instances of {{WebPrintJobAttributes}} which shows the state
-the print job is in (e.g. how many pages completed).
-
-{{cancel()}} method {#web-print-job-cancel}
----
-
-Aborts the print job immediately.
+{{cancel()}} method aborts the print job immediately.
 
 <div class="note">
 Cancelling can be achieved using a {{signal}} param of type {{AbortSignal}}
@@ -335,21 +312,18 @@ passed as a part of the {{WebPrintJobTemplateAttributes}} when calling
 the {{submitPrintJob()}} method.
 </div>
 
-{{onjobstatechange}} [=EventHandler=] attribute {#web-print-job-onjobstatechange}
----
-
-The [=event handler IDL attribute=] for the {{onjobstatechange}} event type.
+{{onjobstatechange}} is the [=event handler IDL attribute=]
+for the {{onjobstatechange}} event type.
 The [=user agent=] MUST fire a {{onjobstatechange}} event whenever
-the {{WebPrintJobState}} or {{jobPagesCompleted}} of the [=print job=] changes.
+the {{WebPrintJobState}} or {{jobPagesCompleted}} of the print job changes.
 
 
 Data model {#data-model}
 ===
 
-{{WebPrinterAttributes}} dictionary {#web-printer-attributes-dictionary}
----
+{{WebPrinterAttributes}} - dictionary  representing the printer capabilities.
 
-Dictionary representing the printer capabilities.
+{{WebPrintJobTemplateAttributes}} - dictionary representing the print attributes.
 
 <xmp class="idl">
   dictionary WebPrinterAttributes {
@@ -390,14 +364,7 @@ Dictionary representing the printer capabilities.
     WebPrintingSides sidesDefault;
     sequence<WebPrintingSides> sidesSupported;
   };
-</xmp>
 
-{{WebPrintJobTemplateAttributes}} dictionary {#web-printer-job-template-attributes-dictionary}
----
-
-Dictionary representing the print attributes.
-
-<xmp class="idl">
   dictionary WebPrintJobTemplateAttributes {
     unsigned long copies;
 
@@ -412,12 +379,7 @@ Dictionary representing the print attributes.
 
     AbortSignal signal;
   };
-</xmp>
 
-Additional dictionaries {#additional-dictionaries}
----
-
-<xmp class="idl">
   dictionary WebPrintingRange {
     unsigned long from;
     unsigned long to;
@@ -456,13 +418,7 @@ Additional dictionaries {#additional-dictionaries}
     unsigned long jobPagesCompleted;
     WebPrintJobState jobState;
   };
-</xmp>
 
-
-Enums {#enums}
----
-
-<xmp class="idl">
   enum WebPrintingMimeMediaType {
     "application/pdf",
   };
@@ -552,7 +508,6 @@ Enums {#enums}
     "aborted"
   };
 </xmp>
-
 
 
 Privacy & Security Considerations {#privacy-security-considerations}
