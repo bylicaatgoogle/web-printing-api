@@ -213,22 +213,22 @@ the {{WebPrintingManager}} object.
 Methods on this interface complete asynchronously, queuing work on the
 <dfn>web printing task source</dfn>.
 
-<div algorithm=get-printers>
-  The {{getPrinters()}} method steps are:
-  1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=policy-controlled feature/web-printing=]", [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
-  1. Let |promise| be [=a new promise=].
-  1. Run the following steps [=in parallel=]:
-      1. Query all printers locally available to the operating system.
-      1. Let |web_printers| be an empty set of {{WebPrinter}} objects.
-      1. Enumerate all printers and run the following steps:
-          1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} object.
-          1. For each printer set {{printerName}} of |web_printer_attributes| to printer's name.
-          1. For each printer set {{printerId}} of |web_printer_attributes| to printer id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
-          1. Let |web_printer| be a new {{WebPrinter}} object whose attributes internal slot is set to |web_printer_attributes|. 
-          1. Add |web_printer| to the set of |web_printers|.
-      1. [=Queue a global task=] on the [=relevant global object=] of [=this=] using the [=web printing task source=] to [=resolve=] |promise| with |web_printers|.
-  1. Return |promise|.
-</div>
+  <div algorithm=get-printers>
+    The {{getPrinters()}} method steps are:
+    1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=policy-controlled feature/web-printing=]", [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+    1. Let |promise| be [=a new promise=].
+    1. Run the following steps [=in parallel=]:
+        1. Query all printers locally available to the operating system.
+        1. Let |web_printers| be an empty set of {{WebPrinter}} objects.
+        1. Enumerate all printers and run the following steps:
+            1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} object.
+            1. For each printer set {{printerName}} of |web_printer_attributes| to printer's name.
+            1. For each printer set {{printerId}} of |web_printer_attributes| to printer id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
+            1. Let |web_printer| be a new {{WebPrinter}} object whose attributes internal slot is set to |web_printer_attributes|. 
+            1. Add |web_printer| to the set of |web_printers|.
+        1. [=Queue a global task=] on the [=relevant global object=] of [=this=] using the [=web printing task source=] to [=resolve=] |promise| with |web_printers|.
+    1. Return |promise|.
+  </div>
 
 
 {{WebPrinter}} {#web-printer-interface}
@@ -257,32 +257,32 @@ printer capabilities throughout the lifetime of the {{WebPrinter}} object.
   {{fetchAttributes()}} needs to be used.
 </div>
 
-<div algorithm=fetch-attributes>
-  The {{fetchAttributes()}} method steps are:
-  1. Let |promise| be [=a new promise=].
-  1. Run the following steps [=in parallel=]:
-      1. If there is any problem while communicating with the [=printer=], [=reject=] |promise| with a new {{NetworkError}} {{DOMException}} and abort these steps.
-      1. Let |new_web_printer_attributes| be a new instance of {{WebPrinterAttributes}}.
-      1. Query the printer for printer capabilities. Perform the necessary mapping to conform the printer capabilities with the {{WebPrinterAttributes}} dictionary according to the Internet Printing Protocol (RFC 8011). Set the corresponding fields of |new_web_printer_attributes| with the returned printer capabilities data.
-      1. Query the printer for printer state. Set the {{printerState}} of |new_web_printer_attributes| to the returned [=printer state=] value.
-      1. Set the {{WebPrinter}} attributes inner slot to |new_web_printer_attributes|.
-      1. [=Resolve=] |promise| with |new_web_printer_attributes|.
-  1. Return |promise|.
-</div>
+  <div algorithm=fetch-attributes>
+    The {{fetchAttributes()}} method steps are:
+    1. Let |promise| be [=a new promise=].
+    1. Run the following steps [=in parallel=]:
+        1. If there is any problem while communicating with the [=printer=], [=reject=] |promise| with a new {{NetworkError}} {{DOMException}} and abort these steps.
+        1. Let |new_web_printer_attributes| be a new instance of {{WebPrinterAttributes}}.
+        1. Query the printer for printer capabilities. Perform the necessary mapping to conform the printer capabilities with the {{WebPrinterAttributes}} dictionary according to the Internet Printing Protocol (RFC 8011). Set the corresponding fields of |new_web_printer_attributes| with the returned printer capabilities data.
+        1. Query the printer for printer state. Set the {{printerState}} of |new_web_printer_attributes| to the returned [=printer state=] value.
+        1. Set the {{WebPrinter}} attributes inner slot to |new_web_printer_attributes|.
+        1. [=Resolve=] |promise| with |new_web_printer_attributes|.
+    1. Return |promise|.
+  </div>
 
-<div algorithm=submit-print-job>
-  The {{submitPrintJob()}} method steps are:
-  1. Let |promise| be [=a new promise=].
-  1. Run the following steps [=in parallel=]:
-      1. If there is any problem while communicating with the printer, [=reject=] |promise| with a new {{NetworkError}} {{DOMException}} and abort these steps.
-      1. Make sure the [=printer=] has up-to-date attributes inner slot. If not, use the algorithm from {{fetchAttributes()}}.
-      1. {{WebPrintJobTemplateAttributes}} MUST be validated against printer capabilities according to the Internet Printing Protocol (RFC 8011). If not valid [=reject=] |promise| with a new {{DataError}} {{DOMException}} and abort these steps.
-      1. Let |pdf_data| hold a PDF document data. Transform {{document_data}} {{Blob}} to a PDF document and set as value of |pdf_data|. If {{document_data}} is malformed, [=reject=] |promise| with a new {{DataError}} {{DomException}} and abort these steps.
-      1. Send |pdf_data| alongside with {{WebPrintJobTemplateAttributes}} and submit as a print job to the printer.
-      1. Let |print_job| be an instance of a {{WebPrintJob}} interface. Associate |print_job| with the print job just submitted to the printer.
-    1. [=Resolve=] |promise| with |print_job|.
-  1. Return |promise|.
-</div>
+  <div algorithm=submit-print-job>
+    The {{submitPrintJob()}} method steps are:
+    1. Let |promise| be [=a new promise=].
+    1. Run the following steps [=in parallel=]:
+        1. If there is any problem while communicating with the printer, [=reject=] |promise| with a new {{NetworkError}} {{DOMException}} and abort these steps.
+        1. Make sure the [=printer=] has up-to-date attributes inner slot. If not, use the algorithm from {{fetchAttributes()}}.
+        1. {{WebPrintJobTemplateAttributes}} MUST be validated against printer capabilities according to the Internet Printing Protocol (RFC 8011). If not valid [=reject=] |promise| with a new {{DataError}} {{DOMException}} and abort these steps.
+        1. Let |pdf_data| hold a PDF document data. Transform {{document_data}} {{Blob}} to a PDF document and set as value of |pdf_data|. If {{document_data}} is malformed, [=reject=] |promise| with a new {{DataError}} {{DomException}} and abort these steps.
+        1. Send |pdf_data| alongside with {{WebPrintJobTemplateAttributes}} and submit as a print job to the printer.
+        1. Let |print_job| be an instance of a {{WebPrintJob}} interface. Associate |print_job| with the print job just submitted to the printer.
+      1. [=Resolve=] |promise| with |print_job|.
+    1. Return |promise|.
+  </div>
 
 <div class="note">
   {{signal}} of type {{AbortSignal}} can be used to {{cancel()}} print job as well.
