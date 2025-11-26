@@ -225,7 +225,7 @@ The {{getPrinters()}} method steps are:
     1. Enumerate all printers and run the following steps:
         1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} object.
         1. For each printer set {{printerName}} of |web_printer_attributes| to printer's name.
-        1. For each printer set {{printerId}} of |web_printer_attributes| to printer id. The id SHOULD be obfuscated using a hashing algorithm.
+        1. For each printer set {{printerId}} of |web_printer_attributes| to printer id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
         1. Let |web_printer| be a new {{WebPrinter}} object whose attributes internal slot is set to |web_printer_attributes|. 
         1. Add |web_printer| to the set of |web_printers|.
     1. [=Resolve=] |promise| with |web_printers|.
