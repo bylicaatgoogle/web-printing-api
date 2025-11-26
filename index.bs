@@ -8,7 +8,7 @@ Repository: bylicaatgoogle/web-printing-api
 URL: https://github.com/bylica-at-google/web-printing-api
 Editor: Dominik Bylica, Google, https://google.com, bylica@google.com
 Editor: Dominic Farolino, Google, https://google.com, domfarolino@google.com
-Abstract: This document defines a new Web Printing API that allows the app developers to build wonderful printer-related features by giving them direct access to printers (in [=isolated contexts=]).
+Abstract: This document defines a new Web Printing API that allows the app developers to build wonderful printer-related features by giving them direct access to printers in [=isolated contexts=].
 Complain About: accidental-2119 yes, missing-example-ids yes
 Markup Shorthands: markdown yes, css no
 </pre>
@@ -17,7 +17,7 @@ Introduction {#intro}
 ===
 
 The Web Printing API brings unprecedented flexibility to implementing printing
-features on the web… I mean, in the [=isolated contexts=].
+features in [=isolated contexts=] (the API is not available on the open web).
 
 Existing alternative {#intro-alternative}
 ---
@@ -25,7 +25,7 @@ Existing alternative {#intro-alternative}
 There is a `window.print()` functionality that exists already, but it basically
 opens a print dialog and asks the user to do the rest. The Web Printing API
 gives app developers access to printers locally available to
-the operating system directly from the web applications (in [=isolated contexts=]),
+the operating system directly from the web applications in [=isolated contexts=],
 and allows submitting print jobs with custom
 print attributes (like paper size, color settings, quality, etc.).
 
