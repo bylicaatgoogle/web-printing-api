@@ -213,6 +213,9 @@ the {{WebPrintingManager}} object.
   };
 </xmp>
 
+Methods on this interface complete asynchronously, queuing work on the
+<dfn>web printing task source</dfn>.
+
 {{getPrinters()}} method {#get-printers-method}
 ---
 
@@ -229,7 +232,7 @@ the {{WebPrintingManager}} object.
           1. For each printer set {{printerId}} of |web_printer_attributes| to printer id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
           1. Let |web_printer| be a new {{WebPrinter}} object whose attributes internal slot is set to |web_printer_attributes|. 
           1. Add |web_printer| to the set of |web_printers|.
-      1. [=Resolve=] |promise| with |web_printers|.
+      1. [=Queue a global task=] on the [=relevant global object=] of [=this=] using the [=web printing task source=] to [=resolve=] |promise| with |web_printers|.
   1. Return |promise|.
 </div>
 
