@@ -7,7 +7,6 @@ Group: wicg
 Repository: bylicaatgoogle/web-printing-api
 URL: https://github.com/bylica-at-google/web-printing-api
 Editor: Dominik Bylica, Google, https://google.com, bylica@google.com
-Editor: Dominic Farolino, Google, https://google.com, domfarolino@google.com
 Abstract: This document defines a new Web Printing API that allows the app developers to build wonderful printer-related features by giving them direct access to printers in [=isolated contexts=].
 Complain About: accidental-2119 yes, missing-example-ids yes
 Markup Shorthands: markdown yes, css no
