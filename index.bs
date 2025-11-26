@@ -254,8 +254,8 @@ Attributes is an instance of {{WebPrinterAttributes}} storing the
 printer capabilities throughout the lifetime of the {{WebPrinter}} object.
 
 <div class="note">
-  After first calling {{getPrinters()}} the printers attributes will
-  only be aware of the printer name and id. For detailed [=attributes=],
+  The freshly created {{WebPrinter}} object will only store the printer name
+  and the printer id in the attributes internal slot. For detailed attributes,
   {{fetchAttributes()}} needs to be used.
 </div>
 
