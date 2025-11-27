@@ -218,12 +218,12 @@ Methods on this interface complete asynchronously, queuing work on the
     1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=policy-controlled feature/web-printing=]", [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
     1. Let |promise| be [=a new promise=].
     1. Run the following steps [=in parallel=]:
-        1. Query all printers locally available to the operating system.
+        1. Let |local_printers| be all printers locally available to the operating system.
         1. Let |web_printers| be an empty set of {{WebPrinter}} objects.
-        1. Enumerate all printers and run the following steps:
+        1. [=list/For each=] |printer| of |local_printers|:
             1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} object.
-            1. For each printer set {{printerName}} of |web_printer_attributes| to printer's name.
-            1. For each printer set {{printerId}} of |web_printer_attributes| to printer id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
+            1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerName}} to |printer|'s name.
+            1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerId}} to |printer|'s id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
             1. Let |web_printer| be a new {{WebPrinter}} object whose attributes internal slot is set to |web_printer_attributes|. 
             1. Add |web_printer| to the set of |web_printers|.
         1. [=Queue a global task=] on the [=relevant global object=] of [=this=] using the [=web printing task source=] to [=resolve=] |promise| with |web_printers|.
