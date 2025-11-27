@@ -263,9 +263,12 @@ printer capabilities throughout the lifetime of the {{WebPrinter}} object.
     1. Run the following steps [=in parallel=]:
         1. If there is any problem while communicating with the printer, [=reject=] |promise| with a new {{NetworkError}} {{DOMException}} and abort these steps.
         1. Let |new_web_printer_attributes| be a new instance of {{WebPrinterAttributes}}.
-        1. Query the printer for printer capabilities. Perform the necessary mapping to conform the printer capabilities with the {{WebPrinterAttributes}} dictionary according to the Internet Printing Protocol (RFC 8011). Set the corresponding fields of |new_web_printer_attributes| with the returned printer capabilities data.
-        1. Query the printer for printer state. Set the {{printerState}} of |new_web_printer_attributes| to the returned printer state value.
-        1. Set the {{WebPrinter}} attributes inner slot to |new_web_printer_attributes|.
+        1. Query the printer for printer capabilities. Let |printer_capabilities| be a list of returned capabilities.
+        1. [=list/For each=] |printer_capability| of |printer_capabilities|:
+          1. Perform the necessary mapping to conform the |printer_capability| with the {{WebPrinterAttributes}} dictionary according to the Internet Printing Protocol (RFC 8011).
+          1. Set the corresponding fields of |new_web_printer_attributes| with the mapped |printer_capability| (e.g. |printer capability| related to media source mapped to valid values of {{WebPrinterAttributes/mediaSourceDefault}} and {{WebPrinterAttributes/mediaSourceSupported}}).
+        1. Query the printer for printer state. Set the {{WebPrinterAttributes/printerState}} of |new_web_printer_attributes| to the returned printer state value.
+        1. Set the {{WebPrinter/WebPrinterAttributes}} attributes inner slot to |new_web_printer_attributes|.
         1. [=Resolve=] |promise| with |new_web_printer_attributes|.
     1. Return |promise|.
   </div>
