@@ -277,7 +277,7 @@ printer capabilities throughout the lifetime of the {{WebPrinter}} object.
         1. If there is any problem while communicating with the printer, [=reject=] |promise| with a new {{NetworkError}} {{DOMException}} and abort these steps.
         1. Make sure the printer has up-to-date attributes inner slot. If not, use the algorithm from {{fetchAttributes()}}.
         1. {{WebPrintJobTemplateAttributes}} MUST be validated against printer capabilities according to the Internet Printing Protocol (RFC 8011). If not valid, [=reject=] |promise| with a new {{DataError}} {{DOMException}} and abort these steps.
-        1. Let |pdf_data| hold a PDF document data. Transform {{document_data}} {{Blob}} to a PDF document and set as value of |pdf_data|. If {{document_data}} is malformed, [=reject=] |promise| with a new {{DataError}} {{DomException}} and abort these steps.
+        1. Let |pdf_data| hold a PDF document data. Transform {{document_data}} {{Blob}} to a PDF document and set as value of |pdf_data|. If {{document_data}} is malformed, i.e. not a valid PDF document, [=reject=] |promise| with a new {{DataError}} {{DomException}} and abort these steps.
         1. Send |pdf_data| alongside with {{WebPrintJobTemplateAttributes}} and submit as a print job to the printer.
         1. Let |print_job| be an instance of a {{WebPrintJob}} interface. Associate |print_job| with the print job just submitted to the printer.
       1. [=Resolve=] |promise| with |print_job|.
