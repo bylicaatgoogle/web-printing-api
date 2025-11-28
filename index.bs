@@ -224,7 +224,7 @@ Methods on this interface complete asynchronously, queuing work on the
             1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} object.
             1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerName}} to |printer|'s name.
             1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerId}} to |printer|'s id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
-            1. Let |web_printer| be a new {{WebPrinter}} object whose attributes internal slot is set to |web_printer_attributes|. 
+            1. Let |web_printer| be a new {{WebPrinter}} object whose [=WebPrinter/attributes=] is set to |web_printer_attributes|. 
             1. Add |web_printer| to the set of |web_printers|.
         1. [=Queue a global task=] on the [=relevant global object=] of [=this=] using the [=web printing task source=] to [=resolve=] |promise| with |web_printers|.
     1. Return |promise|.
@@ -246,16 +246,12 @@ Methods on this interface complete asynchronously, queuing work on the
   };
 </xmp>
 
-Attributes internal slot is an instance of {{WebPrinterAttributes}} storing the
-printer capabilities throughout the lifetime of the {{WebPrinter}} object.
+Each {{WebPrinter}} has <dfn for=WebPrinter>attributes</dfn>, which are
+an instance of {{WebPrinterAttributes}}, initially containing only the
+{{WebPrinterAttributes/printerName}} and {{WebPrinterAttributes/printerId}},
+to obtain more, {{fetchAttributes()}} needs to be used.
 
-{{cachedAttributes()}} method returns the current value stored in the attributes internal slot.
-
-<div class="note">
-  The freshly created {{WebPrinter}} object will only store the printer name
-  and the printer id in the attributes internal slot. For detailed attributes,
-  {{fetchAttributes()}} needs to be used.
-</div>
+{{cachedAttributes()}} method returns the [=WebPrinter/attributes=].
 
   <div algorithm=fetch-attributes>
     The {{fetchAttributes()}} method steps are:
@@ -266,9 +262,9 @@ printer capabilities throughout the lifetime of the {{WebPrinter}} object.
         1. Query the printer for printer capabilities. Let |printer_capabilities| be a list of returned capabilities.
         1. [=list/For each=] |printer_capability| of |printer_capabilities|:
           1. Perform the necessary mapping to conform the |printer_capability| with the {{WebPrinterAttributes}} dictionary according to the Internet Printing Protocol (RFC 8011).
-          1. Set the corresponding fields of |new_web_printer_attributes| with the mapped |printer_capability| (e.g. |printer capability| related to media source mapped to valid values of {{WebPrinterAttributes/mediaSourceDefault}} and {{WebPrinterAttributes/mediaSourceSupported}}).
+          1. Set the corresponding fields of |new_web_printer_attributes| with the mapped |printer_capability| (e.g. |printer capability| related to media source should be mapped to valid values of {{WebPrinterAttributes/mediaSourceDefault}} and {{WebPrinterAttributes/mediaSourceSupported}}).
         1. Query the printer for printer state. Set the {{WebPrinterAttributes/printerState}} of |new_web_printer_attributes| to the returned printer state value.
-        1. Set the {{WebPrinter/WebPrinterAttributes}} attributes inner slot to |new_web_printer_attributes|.
+        1. Set the [=WebPrinter/attributes=] to |new_web_printer_attributes|.
         1. [=Resolve=] |promise| with |new_web_printer_attributes|.
     1. Return |promise|.
   </div>
@@ -278,10 +274,10 @@ printer capabilities throughout the lifetime of the {{WebPrinter}} object.
     1. Let |promise| be [=a new promise=].
     1. Run the following steps [=in parallel=]:
         1. If there is any problem while communicating with the printer, [=reject=] |promise| with a new {{NetworkError}} {{DOMException}} and abort these steps.
-        1. Make sure the printer has up-to-date attributes inner slot. Use the algorithm from {{WebPrinter/fetchAttributes()}}.
+        1. Use the algorithm from {{WebPrinter/fetchAttributes()}} to update [=WebPrinter/attributes=].
         1. Let |printer| be an instance of {{WebPrinter}} the {{WebPrinter/submitPrintJob()}} is executed on.
         1. [=list/For each=] |template_attribute| of {{template_attributes}}:
-          1. If |template_attribute| does not contain supported values checked against a corresponding |printer|'s {{WebPrinterAttributes}} capabilities (e.g. {{WebPrintJobTemplateAttributes/mediaSource}} checked against {{WebPrinterAttributes/mediaSourceSupported}}), [=reject=] |promise| with a new {{DataError}} {{DOMException}} and abort these steps.
+          1. If |template_attribute| does not contain supported values checked against a corresponding |printer|'s [=WebPrinter/attributes=] (e.g. {{WebPrintJobTemplateAttributes/mediaSource}} checked against {{WebPrinterAttributes/mediaSourceSupported}}), [=reject=] |promise| with a new {{DataError}} {{DOMException}} and abort these steps.
         1. Let |pdf_data| hold a PDF document data. Transform {{document_data}} [=Blob=] to a PDF document and set as value of |pdf_data|. If {{document_data}} is malformed, i.e. not a valid PDF document, [=reject=] |promise| with a new {{DataError}} {{DomException}} and abort these steps.
         1. Send |pdf_data| alongside with {{WebPrintJobTemplateAttributes}} and submit as a print job to the printer.
         1. Let |print_job| be an instance of a {{WebPrintJob}} interface. Associate |print_job| with the print job just submitted to the printer.
@@ -306,8 +302,11 @@ printer capabilities throughout the lifetime of the {{WebPrinter}} object.
   };
 </xmp>
 
-{{attributes()}} method returns an instances of {{WebPrintJobAttributes}}
-which shows the state the print job is in (e.g. how many pages completed).
+Each {{WebPrintJob}} has <dfn for=WebPrintJob>attributes</dfn>, which are
+an instance of {{WebPrintJobAttributes}}, initially empty.
+
+{{attributes()}} method returns [=WebPrintJob/attributes=] which shows
+the state the print job is in (e.g. how many pages completed).
 
 {{cancel()}} method aborts the print job immediately.
 
@@ -326,9 +325,9 @@ the {{WebPrintJobState}} or {{jobPagesCompleted}} of the print job changes.
 Data model {#data-model}
 ===
 
-{{WebPrinterAttributes}} - dictionary  representing the printer capabilities.
+{{WebPrinterAttributes}} - dictionary representing the [=WebPrinter/attributes=].
 
-{{WebPrintJobTemplateAttributes}} - dictionary representing the print attributes.
+{{WebPrintJobTemplateAttributes}} - dictionary representing the print job attributes.
 
 <xmp class="idl">
   dictionary WebPrinterAttributes {
@@ -524,7 +523,7 @@ Potential issues {#privacy-security-issues}
 ### Fingerprinting ### {#privacy-security-issues-fingerprinting}
 
 The {{WebPrinter}} object exposes {{printerName}} and {{printerId}}
-attributes that can be used for fingerprinting.
+[=WebPrinter/attributes=] that can be used for fingerprinting.
 
 ### Forging print jobs ### {#privacy-security-issues-forging-print-jobs}
 
