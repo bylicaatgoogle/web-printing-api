@@ -10,6 +10,16 @@ Editor: Dominik Bylica, Google, https://google.com, bylica@google.com
 Abstract: This document defines a new Web Printing API that allows the app developers to build wonderful printer-related features by giving them direct access to printers in [=isolated contexts=].
 Complain About: accidental-2119 yes, missing-example-ids yes
 Markup Shorthands: markdown yes, css no
+</pre> 
+<pre class="link-defaults">
+  spec:dom; type:dfn; for:clone a node; text:document
+  spec:html; type:dfn; text:allowed to use
+  spec:html; type:interface; text:window
+  spec:permissions-policy; type:dfn; text:policy-controlled feature
+  spec:fileapi; type:interface; text:blob
+  spec:infra; type:dfn; text:user agent
+  spec:dom; type:dfn; text:origin
+  spec:html; type:method; for:Window; text:print()
 </pre>
 
 Introduction {#intro}
@@ -21,7 +31,7 @@ features in [=isolated contexts=] (the API is not available on the open web).
 Existing alternative {#intro-alternative}
 ---
 
-There is a <code>window.[=Window/print()=]</code> functionality that exists already, but it basically
+There is a <code>window.{{Window/print()}}</code> functionality that exists already, but it basically
 opens a print dialog and asks the user to do the rest. The Web Printing API
 gives app developers access to printers locally available to
 the operating system directly from the web applications in [=isolated contexts=],
@@ -41,7 +51,7 @@ Using the Web Printing API you can:
     files with specific print attributes.
   - Automate printing in any way! Build previously repetitive printing
     workflows!
-  - On top of all that, unlike with <code>window.[=Window/print()=]</code>,
+  - On top of all that, unlike with <code>window.{{Window/print()}}</code>,
     you can observe the job state of your print jobs - whether they finished,
     failed, etc.
 
@@ -215,7 +225,7 @@ Methods on this interface complete asynchronously, queuing work on the
 
   <div algorithm=get-printers>
     The {{getPrinters()}} method steps are:
-    1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=policy-controlled feature/web-printing=]", [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+    1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named [="web-printing"=], [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
     1. Let |promise| be [=a new promise=].
     1. Run the following steps [=in parallel=]:
         1. Let |local_printers| be all printers locally available to the operating system.
@@ -262,7 +272,7 @@ to obtain more, {{fetchAttributes()}} needs to be used.
         1. Query the printer for printer capabilities. Let |printer_capabilities| be a list of returned capabilities.
         1. [=list/For each=] |printer_capability| of |printer_capabilities|:
           1. Perform the necessary mapping to conform the |printer_capability| with the {{WebPrinterAttributes}} dictionary according to the Internet Printing Protocol (RFC 8011).
-          1. Set the corresponding fields of |new_web_printer_attributes| with the mapped |printer_capability| (e.g. |printer capability| related to media source should be mapped to valid values of {{WebPrinterAttributes/mediaSourceDefault}} and {{WebPrinterAttributes/mediaSourceSupported}}).
+          1. Set the corresponding fields of |new_web_printer_attributes| with the mapped |printer_capability| (e.g. |printer_capability| related to media source should be mapped to valid values of {{WebPrinterAttributes/mediaSourceDefault}} and {{WebPrinterAttributes/mediaSourceSupported}}).
         1. Query the printer for printer state. Set the {{WebPrinterAttributes/printerState}} of |new_web_printer_attributes| to the returned printer state value.
         1. Set the [=WebPrinter/attributes=] to |new_web_printer_attributes|.
         1. [=Resolve=] |promise| with |new_web_printer_attributes|.
@@ -278,7 +288,7 @@ to obtain more, {{fetchAttributes()}} needs to be used.
         1. Let |printer| be an instance of {{WebPrinter}} the {{WebPrinter/submitPrintJob()}} is executed on.
         1. [=list/For each=] |template_attribute| of {{template_attributes}}:
           1. If |template_attribute| does not contain supported values checked against a corresponding |printer|'s [=WebPrinter/attributes=] (e.g. {{WebPrintJobTemplateAttributes/mediaSource}} checked against {{WebPrinterAttributes/mediaSourceSupported}}), [=reject=] |promise| with a new {{DataError}} {{DOMException}} and abort these steps.
-        1. Let |pdf_data| hold a PDF document data. Transform {{document_data}} [=Blob=] to a PDF document and set as value of |pdf_data|. If {{document_data}} is malformed, i.e. not a valid PDF document, [=reject=] |promise| with a new {{DataError}} {{DomException}} and abort these steps.
+        1. Let |pdf_data| hold a PDF document data. Transform {{document_data}} {{Blob}} to a PDF document and set as value of |pdf_data|. If {{document_data}} is malformed, i.e. not a valid PDF document, [=reject=] |promise| with a new {{DataError}} {{DOMException}} and abort these steps.
         1. Send |pdf_data| alongside with {{WebPrintJobTemplateAttributes}} and submit as a print job to the printer.
         1. Let |print_job| be an instance of a {{WebPrintJob}} interface. Associate |print_job| with the print job just submitted to the printer.
       1. [=Resolve=] |promise| with |print_job|.
@@ -544,11 +554,11 @@ Mitigating factors {#privacy-security-mitigating-factors}
 
 This API MUST only be exposed in an [=isolated context=].
 
-### <dfn>Permissions Policy</dfn> ### {#privacy-security-permission-policy}
+### <dfn export>Permissions Policy</dfn> ### {#privacy-security-permission-policy}
 
-This specification uses a [=policy-controlled feature=] identified by
-the string "web-printing". Its [=policy-controlled feature/default allowlist=]
-is `"self"`.
+This specification defines a [=policy-controlled feature=] identified by
+the string <dfn class="permission">"web-printing"</dfn>.
+Its [=policy-controlled feature/default allowlist=] is `"self"`.
 
 A [=document=]'s [=Document/permissions policy=] determines whether
 any content in that document is allowed to use {{getPrinters()}}. If disabled
