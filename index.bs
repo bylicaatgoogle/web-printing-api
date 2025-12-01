@@ -306,7 +306,7 @@ to obtain more, {{fetchAttributes()}} needs to be used.
   [Exposed=Window, SecureContext, IsolatedContext]
   interface WebPrintJob : EventTarget {
     WebPrintJobAttributes attributes();
-    void cancel();
+    undefined cancel();
 
     attribute EventHandler onjobstatechange;
   };
