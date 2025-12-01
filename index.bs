@@ -252,7 +252,7 @@ Methods on this interface complete asynchronously, queuing work on the
     Promise<WebPrintJob> submitPrintJob(
       USVString job_name,
       Blob document_data,
-      optional WebPrintJobTemplateAttributes template_attributes);
+      optional WebPrintJobTemplateAttributes template_attributes = {});
   };
 </xmp>
 
