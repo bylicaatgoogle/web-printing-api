@@ -228,7 +228,7 @@ queue tasks back on the main thread via the <dfn>web printing task source</dfn>.
     1. Let |promise| be [=a new promise=].
     1. Run the following steps [=in parallel=]:
         1. Let |local_printers| be all printers locally available to the operating system.
-        1. Let |web_printers| be an empty set of {{WebPrinter}} objects.
+        1. Let |web_printers| be an empty [=set=] of {{WebPrinter}} objects.
         1. [=list/For each=] |printer| of |local_printers|:
             1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} object.
             1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerName}} to |printer|'s name.
