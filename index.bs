@@ -18,6 +18,7 @@ Markup Shorthands: markdown yes, css no
   spec:permissions-policy; type:dfn; text:policy-controlled feature
   spec:fileapi; type:interface; text:blob
   spec:infra; type:dfn; text:user agent
+  spec:infra; type:dfn; for:/; text:set
   spec:dom; type:dfn; text:origin
   spec:html; type:method; for:Window; text:print()
 </pre>
