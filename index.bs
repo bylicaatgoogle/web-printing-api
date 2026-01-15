@@ -49,8 +49,8 @@ Using the Web Printing API you can:
     as the printer state (idle, busy, etc.).
     When knowing the printer capabilities, apps can prepare print-ready
     files with specific print attributes.
-  - Automate printing in any way! Build previously repetitive printing
-    workflows!
+  - Automate printing in any way. Build previously repetitive printing
+    workflows.
   - On top of all that, unlike with <code>window.{{Window/print()}}</code>,
     you can observe the job state of your print jobs - whether they finished,
     failed, etc.
