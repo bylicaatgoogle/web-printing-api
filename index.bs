@@ -230,7 +230,7 @@ queue tasks back on the main thread via the <dfn>web printing task source</dfn>.
         1. Let |local_printers| be all printers locally available to the operating system.
         1. Let |web_printers| be an empty [=set=] of {{WebPrinter}} objects.
         1. [=list/For each=] |printer| of |local_printers|:
-            1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} object.
+            1. Let |web_printer_attributes| be a new {{WebPrinterAttributes}} dictionary.
             1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerName}} to |printer|'s name.
             1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerId}} to |printer|'s id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
             1. Let |web_printer| be a new {{WebPrinter}} object whose [=WebPrinter/attributes=] is set to |web_printer_attributes|. 
