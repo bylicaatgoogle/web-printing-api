@@ -556,7 +556,7 @@ This API MUST only be exposed in an [=isolated context=].
 ### <dfn export>Permissions Policy</dfn> ### {#privacy-security-permission-policy}
 
 This specification defines a [=policy-controlled feature=] identified by
-the string <dfn class="permission">"web-printing"</dfn>.
+the string "<dfn class="permission">web-printing</dfn>".
 Its [=policy-controlled feature/default allowlist=] is `"self"`.
 
 A [=document=]'s [=Document/permissions policy=] determines whether
@@ -571,10 +571,10 @@ a web application to gain access to a {{WebPrinter}} object without
 [=express permission=].
 
 [=User consent=] MUST be obtained for a specific [=origin=].
-The request for consent MUST be triggered by a call to the {{getPrinters()}}
-method. The user agent MUST display a permission promptthat clearly indicates
-which origin is requesting access and provides the user with enough information
-to make an informed decision.
+The request for consent MUST be triggered by a call to the
+{{WebPrintingManager/getPrinters()}} method. The user agent MUST display
+a permission promptthat clearly indicates which origin is requesting access
+and provides the user with enough information to make an informed decision.
 
 User agents SHOULD provide options for both transient
 (e.g., "for this session only") and persistent permission.
