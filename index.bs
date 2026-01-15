@@ -201,7 +201,7 @@ Extensions to the {{Window}} interface {#window-interface}
 
 <xmp class="idl">
   [Exposed=Window, SecureContext, IsolatedContext]
-  partial interface mixin Window {
+  partial interface Window {
     [SameObject] readonly attribute WebPrintingManager printing;
   };
 </xmp>
