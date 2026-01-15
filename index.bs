@@ -206,7 +206,7 @@ Extensions to the {{Window}} interface {#window-interface}
   };
 </xmp>
 
-When getting, the {{printing}} attribute always returns the same instance of
+When getting, the {{Window/printing}} attribute always returns the same instance of
 the {{WebPrintingManager}} object.
 
 
