@@ -26,7 +26,7 @@ Introduction {#intro}
 ===
 
 The Web Printing API brings unprecedented flexibility to implementing printing
-features in [=isolated contexts=] (the API is not available on the open web).
+features in [=isolated contexts=]. The API is not exposed in ordinary web contexts.
 
 Existing alternative {#intro-alternative}
 ---
