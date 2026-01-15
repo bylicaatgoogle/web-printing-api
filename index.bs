@@ -1,0 +1,20 @@
+<pre class='metadata'>
+Title: Web Printing API
+Shortname: web-printing-api
+Level: 1
+Status: w3c/UD
+Group: wicg
+Repository: bylicaatgoogle/web-printing-api
+URL: https://github.com/bylica-at-google/web-printing-api
+Editor: Dominik Bylica, Google, https://google.com, bylica@google.com
+Abstract: This document defines a new Web Printing API that allows the app developers to build wonderful printer-related features by giving them direct access to printers in [=isolated contexts=].
+Complain About: accidental-2119 yes, missing-example-ids yes
+Markup Shorthands: markdown yes, css no
+</pre> 
+
+Introduction {#intro}
+===
+
+The Web Printing API brings unprecedented flexibility to implementing printing
+features in [=isolated contexts=]. The API is not exposed in ordinary web contexts.
+
