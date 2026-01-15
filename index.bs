@@ -227,6 +227,7 @@ queue tasks back on the main thread via the <dfn>web printing task source</dfn>.
 
     1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=web-printing=]", [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
     1. Let |promise| be [=a new promise=].
+    1. Let |global| be [=this=]'s [=relevant global object=].
     1. Run the following steps [=in parallel=]:
         1. Let |local_printers| be all printers locally available to the operating system.
         1. Let |web_printers| be an empty [=set=] of {{WebPrinter}} objects.
@@ -236,7 +237,7 @@ queue tasks back on the main thread via the <dfn>web printing task source</dfn>.
             1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerId}} to |printer|'s id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
             1. Let |web_printer| be a new {{WebPrinter}} object whose [=WebPrinter/attributes=] is set to |web_printer_attributes|. 
             1. Add |web_printer| to the set of |web_printers|.
-        1. [=Queue a global task=] on the [=relevant global object=] of [=this=] using the [=web printing task source=] to [=resolve=] |promise| with |web_printers|.
+        1. [=Queue a global task=] on |global| using the [=web printing task source=] to [=resolve=] |promise| with |web_printers|.
     1. Return |promise|.
   </div>
 
