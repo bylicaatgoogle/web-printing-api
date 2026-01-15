@@ -31,7 +31,7 @@ features in [=isolated contexts=]. The API is not exposed in ordinary web contex
 Existing alternative {#intro-alternative}
 ---
 
-There is a <code>window.{{Window/print()}}</code> functionality that exists already, but it basically
+There is a <code>window.{{Window/print()}}</code> method that exists, but it basically
 opens a print dialog and asks the user to do the rest. The Web Printing API
 gives app developers access to printers locally available to
 the operating system directly from the web applications in [=isolated contexts=],
