@@ -218,12 +218,13 @@ Each {{Window}} object is associated with a unique instance of a {{WebPrintingMa
   };
 </xmp>
 
-Methods on this interface complete asynchronously, queuing work on the
-<dfn>web printing task source</dfn>.
+The methods on this interface run some of their steps [=in parallel=], and
+queue tasks back on the main thread via the <dfn>web printing task source</dfn>.
 
   <div algorithm=get-printers>
-    The {{getPrinters()}} method steps are:
-    1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named [="web-printing"=], [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
+    The {{WebPrintingManager/getPrinters()}} method steps are:
+
+    1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=web-printing=]", [=exception/throw=] a "{{NotAllowedError}}" {{DOMException}}.
     1. Let |promise| be [=a new promise=].
     1. Run the following steps [=in parallel=]:
         1. Let |local_printers| be all printers locally available to the operating system.
