@@ -554,9 +554,9 @@ Applications could potentially observe when printers are in use.
 Mitigating factors {#privacy-security-mitigating-factors}
 ---
 
-### [=Isolated Context=] ### {#privacy-security-isolated-context}
-
-This API MUST only be exposed in an [=isolated context=].
+<div class="note">
+  The IDL mandates that this API is only exposed in [=isolated context=].
+</div>
 
 ### <dfn export>Permissions Policy</dfn> ### {#privacy-security-permission-policy}
 
