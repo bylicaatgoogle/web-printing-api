@@ -21,6 +21,7 @@ Markup Shorthands: markdown yes, css no
   spec:infra; type:dfn; for:/; text:set
   spec:dom; type:dfn; text:origin
   spec:html; type:method; for:Window; text:print()
+  spec:ecmascript; type:dfn; text:list
 </pre>
 
 Introduction {#intro}
