@@ -238,9 +238,10 @@ queue tasks back on the main thread via the <dfn>web printing task source</dfn>.
             1. Set |web_printer_attributes|'s {{WebPrinterAttributes/printerId}} to |printer|'s id. The id MUST be obfuscated by returning a hex string representation of a SHA256 hash of itself.
             1. Append |web_printer_attributes| to |attributes_list|.
         1. [=Queue a global task=] on |global| using the [=web printing task source=] to run these steps:
-            1. Let |web_printers| be an empty [=set=] of {{WebPrinter}} objects.
+            1. Let |web_printers| be an empty [=list=] of {{WebPrinter}} objects.
             1. [=list/For each=] |attributes| of |attributes_list|:
                 1. Let |web_printer| be a new {{WebPrinter}} whose [=WebPrinter/attributes=] is set to |attributes|.
+                1. Append |web_printer| to |web_printers|.
             1. [=Resolve=] |promise| with |web_printers|.
     1. Return |promise|.
   </div>
